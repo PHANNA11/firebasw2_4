@@ -69,34 +69,59 @@ class _MyHomePageState extends State<MyHomePage> {
                       hintText: 'password'),
                 ),
               ),
-              CupertinoButton(
-                  color: Theme.of(context).primaryColor,
-                  child: Text('Login'),
-                  onPressed: () async {
-                    try {
-                      final credential = await FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                        email: emailAdressController.text,
-                        password: passwordController.text,
-                      );
-                      if (credential != null) {
-                        // ignore: use_build_context_synchronously
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ));
-                      }
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
-                  }),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CupertinoButton(
+                      color: Theme.of(context).primaryColor,
+                      child: const Text('Login'),
+                      onPressed: () async {
+                        try {
+                          final credential = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                            email: emailAdressController.text,
+                            password: passwordController.text,
+                          );
+                          if (credential != null) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomePage(),
+                                ));
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      }),
+                  CupertinoButton(
+                      color: Theme.of(context).primaryColor,
+                      child: const Text('Sign Up'),
+                      onPressed: () async {
+                        try {
+                          final credential = await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: 'phanna123@gmail.com',
+                            password: 'phanna123',
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            print('The password provided is too weak.');
+                          } else if (e.code == 'email-already-in-use') {
+                            print('The account already exists for that email.');
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      }),
+                ],
+              ),
             ],
           ),
         ),
