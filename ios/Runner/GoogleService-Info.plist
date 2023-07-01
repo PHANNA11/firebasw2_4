@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>626445077389-olp1m8obje3h97udns9hvnm0k8n8v9ln.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.626445077389-olp1m8obje3h97udns9hvnm0k8n8v9ln</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>626445077389-4o6bsbn74ghjiklhpblq5mo86pe3eo38.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB_xGbIkGM6NWR9GJ3JPnwJ-fyR5wOd710</string>
+	<key>GCM_SENDER_ID</key>
+	<string>626445077389</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.firebase24</string>
+	<key>PROJECT_ID</key>
+	<string>fooda-app-5ee65</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fooda-app-5ee65.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:626445077389:ios:09a06eb31b0a3e63934bc4</string>
+</dict>
+</plist>

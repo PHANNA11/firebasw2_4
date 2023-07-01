@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "626445077389",
+    "project_id": "fooda-app-5ee65",
+    "storage_bucket": "fooda-app-5ee65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:626445077389:android:f668908403ed1c52934bc4",
+        "android_client_info": {
+          "package_name": "com.example.firebase2_4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "626445077389-4o6bsbn74ghjiklhpblq5mo86pe3eo38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase2_4",
+            "certificate_hash": "62c344adc498f36f67e5873590daee6f93ca08d5"
+          }
+        },
+        {
+          "client_id": "626445077389-mtivafkr17j7h6q1ag6ittsqejh5gtip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAe8pj32FglNwg1K6hOWmsULerWzYJ-ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "626445077389-mtivafkr17j7h6q1ag6ittsqejh5gtip.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
