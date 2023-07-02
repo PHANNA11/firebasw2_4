@@ -84,11 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
                           if (credential != null) {
                             // ignore: use_build_context_synchronously
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => HomePage(),
-                                ));
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                              (route) => false,
+                            );
                           }
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
