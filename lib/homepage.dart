@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase2_4/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
               future: dataRef.doc(listDocId[index]).get(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Center(
+                  return const Center(
                       child: Icon(
                     Icons.info,
                     color: Colors.red,
@@ -52,25 +53,73 @@ class _HomePageState extends State<HomePage> {
                   ));
                 } else if (snapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  var data = snapshot.data;
-                  return data == null
-                      ? SizedBox(
+                  UserModel user =
+                      UserModel.fromDucumentSnapShot(snapshot.data!);
+                  return snapshot.data == null
+                      ? const SizedBox(
                           child: Text('No data...'),
                         )
                       : Card(
                           elevation: 0,
                           child: ListTile(
-                            title: Text(data['user_name']),
+                            leading: IconButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(listDocId[index])
+                                      .set({
+                                    'user_id': user.userId,
+                                    'user_name': 'Davan',
+                                    'password': user.password
+                                  }).then((value) {
+                                    listDocId.clear();
+                                    getDocumentId();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.blue,
+                                )),
+                            title: Text(user.userName),
+                            trailing: IconButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(listDocId[index])
+                                      .delete()
+                                      .then((value) {
+                                    listDocId.clear();
+                                    getDocumentId();
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.delete_forever,
+                                  color: Colors.red,
+                                  size: 30,
+                                )),
                           ),
                         );
                 }
               },
             );
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await FirebaseFirestore.instance.collection('users').add({
+            'user_id': DateTime.now().microsecondsSinceEpoch,
+            'user_name': 'Dalin',
+            'password': 'wertyui543'
+          }).then((value) {
+            listDocId.clear();
+            getDocumentId();
+          });
+        },
+        child: const Icon(Icons.done),
+      ),
     );
   }
 }
