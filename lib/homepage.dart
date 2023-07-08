@@ -12,100 +12,72 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> listDocId = [];
-  getDocumentId() async {
-    await FirebaseFirestore.instance.collection('users').get().then((value) {
-      value.docs.forEach((element) {
-        setState(() {
-          listDocId.add(element.reference.id);
-        });
-      });
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getDocumentId();
-  }
-
+  CollectionReference dataRef = FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hello'),
       ),
-      body: ListView.builder(
-          itemCount: listDocId.length,
-          itemBuilder: (context, index) {
-            CollectionReference dataRef =
-                FirebaseFirestore.instance.collection('users');
-            return FutureBuilder<DocumentSnapshot>(
-              future: dataRef.doc(listDocId[index]).get(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return const Center(
-                      child: Icon(
-                    Icons.info,
-                    color: Colors.red,
-                    size: 30,
-                  ));
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  UserModel user =
-                      UserModel.fromDucumentSnapShot(snapshot.data!);
-                  return snapshot.data == null
-                      ? const SizedBox(
-                          child: Text('No data...'),
-                        )
-                      : Card(
-                          elevation: 0,
-                          child: ListTile(
-                            leading: IconButton(
-                                onPressed: () async {
-                                  await FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(listDocId[index])
-                                      .set({
-                                    'user_id': user.userId,
-                                    'user_name': 'Davan',
-                                    'password': user.password
-                                  }).then((value) {
-                                    listDocId.clear();
-                                    getDocumentId();
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.blue,
-                                )),
-                            title: Text(user.userName),
-                            trailing: IconButton(
-                                onPressed: () async {
-                                  await FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(listDocId[index])
-                                      .delete()
-                                      .then((value) {
-                                    listDocId.clear();
-                                    getDocumentId();
-                                  });
-                                },
-                                icon: const Icon(
-                                  Icons.delete_forever,
-                                  color: Colors.red,
-                                  size: 30,
-                                )),
-                          ),
-                        );
-                }
-              },
-            );
+      body: StreamBuilder<QuerySnapshot>(
+          stream: dataRef.snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(
+                  child: Icon(
+                Icons.info,
+                color: Colors.red,
+                size: 30,
+              ));
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    UserModel user = UserModel.fromDucumentSnapShot(
+                        snapshot.data!.docs[index]);
+                    return snapshot.data == null
+                        ? const SizedBox(
+                            child: Text('No data...'),
+                          )
+                        : Card(
+                            elevation: 0,
+                            child: ListTile(
+                              leading: IconButton(
+                                  onPressed: () async {
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(snapshot.data!.docs[index].id)
+                                        .set({
+                                      'user_id': user.userId,
+                                      'user_name': 'Davan',
+                                      'password': user.password
+                                    });
+                                  },
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.blue,
+                                  )),
+                              title: Text(user.userName),
+                              trailing: IconButton(
+                                  onPressed: () async {
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(snapshot.data!.docs[index].id)
+                                        .delete();
+                                  },
+                                  icon: const Icon(
+                                    Icons.delete_forever,
+                                    color: Colors.red,
+                                    size: 30,
+                                  )),
+                            ),
+                          );
+                  });
+            }
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -113,9 +85,6 @@ class _HomePageState extends State<HomePage> {
             'user_id': DateTime.now().microsecondsSinceEpoch,
             'user_name': 'Dalin',
             'password': 'wertyui543'
-          }).then((value) {
-            listDocId.clear();
-            getDocumentId();
           });
         },
         child: const Icon(Icons.done),
