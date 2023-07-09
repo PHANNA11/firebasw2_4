@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2_4/model/user_model.dart';
+import 'package:firebase2_4/view/shop/view/shop_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,6 +48,9 @@ class _HomePageState extends State<HomePage> {
                         : Card(
                             elevation: 0,
                             child: ListTile(
+                              onTap: () {
+                                Get.to(() => ShopHome());
+                              },
                               leading: IconButton(
                                   onPressed: () async {
                                     await FirebaseFirestore.instance
