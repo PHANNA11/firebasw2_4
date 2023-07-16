@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2_4/model/user_model.dart';
 import 'package:firebase2_4/view/shop/view/shop_home.dart';
@@ -41,6 +43,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     UserModel user = UserModel.fromDucumentSnapShot(
                         snapshot.data!.docs[index]);
+
                     return snapshot.data == null
                         ? const SizedBox(
                             child: Text('No data...'),
@@ -49,7 +52,9 @@ class _HomePageState extends State<HomePage> {
                             elevation: 0,
                             child: ListTile(
                               onTap: () {
-                                Get.to(() => ShopHome());
+                                Get.to(() => ShopHome(
+                                      userDocId: snapshot.data!.docs[index].id,
+                                    ));
                               },
                               leading: IconButton(
                                   onPressed: () async {

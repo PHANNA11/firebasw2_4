@@ -32,4 +32,11 @@ class ProductModel {
         qty = int.parse(snapshot['pro_qty'].toString()),
         image = snapshot['pro_image'],
         description = snapshot['pro_description'];
+  ProductModel.fromMap(Map<String, dynamic> map)
+      : id = map['pro_id'],
+        name = map['pro_name'],
+        price = map['pro_price'],
+        qty = int.parse(map['pro_qty'].toString()),
+        image = map['pro_image'],
+        description = map['pro_description'];
 }

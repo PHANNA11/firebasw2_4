@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2_4/model/product_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:badges/badges.dart' as badges;
 
 class ShopHome extends StatefulWidget {
-  const ShopHome({super.key});
+  ShopHome({super.key, required this.userDocId});
+
+  late String userDocId;
 
   @override
   State<ShopHome> createState() => _ShopHomeState();
@@ -21,18 +24,54 @@ class _ShopHomeState extends State<ShopHome> {
       appBar: AppBar(
         // ignore: prefer_const_constructors
         title: Text('Shop'),
-        actions: const [
+        actions: [
           Align(
             alignment: Alignment.centerLeft,
-            child: badges.Badge(
-              badgeContent: Text('3'),
-              child: Icon(
-                Icons.shopping_cart,
-                size: 30,
-              ),
-            ),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: dataRef.snapshots(),
+                builder: (context, snapshot) {
+                  CollectionReference dataRefShopping = FirebaseFirestore
+                      .instance
+                      .collection('users')
+                      .doc(widget.userDocId)
+                      .collection('shoppings');
+
+                  return snapshot.data == null
+                      ? const SizedBox()
+                      : StreamBuilder<QuerySnapshot>(
+                          stream: dataRefShopping.snapshots(),
+                          builder: (context, snapshots) {
+                            if (snapshots.hasError) {
+                              return const Center(
+                                  child: Icon(
+                                Icons.info,
+                                color: Colors.red,
+                                size: 30,
+                              ));
+                            } else if (snapshots.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              return badges.Badge(
+                                showBadge:
+                                    snapshots.data!.docs.isEmpty ? false : true,
+                                badgeContent: snapshots.data!.docs.isNotEmpty
+                                    ? Text(snapshots
+                                        .data!.docs[0]['shopping_cart'].length
+                                        .toString())
+                                    : SizedBox(),
+                                child: const Icon(
+                                  Icons.shopping_cart,
+                                  size: 30,
+                                ),
+                              );
+                            }
+                          });
+                }),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           )
         ],
