@@ -7,13 +7,15 @@ class ProductModel {
   late String description;
   late double price;
   late int qty;
+  late double total;
   ProductModel(
       {required this.id,
       required this.name,
       required this.qty,
       required this.price,
       required this.image,
-      required this.description});
+      required this.description,
+      required this.total});
   Map<String, dynamic> toMap() {
     return {
       'pro_id': id,
@@ -21,7 +23,8 @@ class ProductModel {
       'pro_qty': qty,
       'pro_price': price,
       'pro_image': image,
-      'pro_description': description
+      'pro_description': description,
+      'total': qty * price
     };
   }
 
@@ -31,12 +34,14 @@ class ProductModel {
         price = snapshot['pro_price'],
         qty = int.parse(snapshot['pro_qty'].toString()),
         image = snapshot['pro_image'],
-        description = snapshot['pro_description'];
+        description = snapshot['pro_description'],
+        total = double.parse(snapshot['total'].toString());
   ProductModel.fromMap(Map<String, dynamic> map)
       : id = map['pro_id'],
         name = map['pro_name'],
         price = map['pro_price'],
         qty = int.parse(map['pro_qty'].toString()),
         image = map['pro_image'],
-        description = map['pro_description'];
+        description = map['pro_description'],
+        total = double.parse(map['total'].toString());
 }

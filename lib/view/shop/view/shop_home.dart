@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2_4/model/product_model.dart';
+import 'package:firebase2_4/view/shop/view/shopping_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:get/get.dart';
 
 class ShopHome extends StatefulWidget {
   ShopHome({super.key, required this.userDocId});
@@ -54,17 +56,23 @@ class _ShopHomeState extends State<ShopHome> {
                                 child: CircularProgressIndicator(),
                               );
                             } else {
-                              return badges.Badge(
-                                showBadge:
-                                    snapshots.data!.docs.isEmpty ? false : true,
-                                badgeContent: snapshots.data!.docs.isNotEmpty
-                                    ? Text(snapshots
-                                        .data!.docs[0]['shopping_cart'].length
-                                        .toString())
-                                    : SizedBox(),
-                                child: const Icon(
-                                  Icons.shopping_cart,
-                                  size: 30,
+                              return GestureDetector(
+                                onTap: () => Get.to(() => ShoppingScreen(
+                                      userDocId: widget.userDocId,
+                                    )),
+                                child: badges.Badge(
+                                  showBadge: snapshots.data!.docs.isEmpty
+                                      ? false
+                                      : true,
+                                  badgeContent: snapshots.data!.docs.isNotEmpty
+                                      ? Text(snapshots
+                                          .data!.docs[0]['shopping_cart'].length
+                                          .toString())
+                                      : const SizedBox(),
+                                  child: const Icon(
+                                    Icons.shopping_cart,
+                                    size: 30,
+                                  ),
                                 ),
                               );
                             }
@@ -143,6 +151,14 @@ class _ShopHomeState extends State<ShopHome> {
                     ],
                   ),
                   GestureDetector(
+                    onTap: () async {
+                      var setData = {'shopping_cart': []..add(pro.toMap())};
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(widget.userDocId)
+                          .collection('shoppings')
+                          .add(setData);
+                    },
                     child: const CircleAvatar(
                       maxRadius: 20,
                       child: Icon(Icons.shopping_cart_checkout),
