@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase2_4/model/user_model.dart';
 import 'package:firebase2_4/view/shop/view/shop_home.dart';
+import 'package:firebase2_4/view/storage/test_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -89,15 +90,26 @@ class _HomePageState extends State<HomePage> {
                   });
             }
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await FirebaseFirestore.instance.collection('users').add({
-            'user_id': DateTime.now().microsecondsSinceEpoch,
-            'user_name': 'Dalin',
-            'password': 'wertyui543'
-          });
-        },
-        child: const Icon(Icons.done),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              Get.to(() => StorageImage());
+            },
+            child: const Icon(Icons.image),
+          ),
+          FloatingActionButton(
+            onPressed: () async {
+              await FirebaseFirestore.instance.collection('users').add({
+                'user_id': DateTime.now().microsecondsSinceEpoch,
+                'user_name': 'Dalin',
+                'password': 'wertyui543'
+              });
+            },
+            child: const Icon(Icons.done),
+          ),
+        ],
       ),
     );
   }
